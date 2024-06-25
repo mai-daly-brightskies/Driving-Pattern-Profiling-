@@ -19,7 +19,7 @@ with open('../models/model.pkl', 'rb') as file:
     model = pickle.load(file)
 
 
-data = pd.read_csv('../data/random_sample.csv')
+data = pd.read_csv('../data/preprocessed/random_sample.csv')
 
 attack_types = ['Abnormal','Normal']
 risk_levels = {
