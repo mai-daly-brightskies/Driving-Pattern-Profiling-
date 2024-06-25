@@ -12,14 +12,14 @@ def predict_results(model, encoder, sample):
     else:
         return 'Abnormal'
 
-with open('./models/label_encoder.pkl', 'rb') as file:
+with open('../models/label_encoder.pkl', 'rb') as file:
     encoder = pickle.load(file)
 
-with open('./models/model.pkl', 'rb') as file:
+with open('../models/model.pkl', 'rb') as file:
     model = pickle.load(file)
 
 
-data = pd.read_csv(',/data/random_sample.csv')
+data = pd.read_csv('../data/random_sample.csv')
 
 attack_types = ['Abnormal','Normal']
 risk_levels = {
