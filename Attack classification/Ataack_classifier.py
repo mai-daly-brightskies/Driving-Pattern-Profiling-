@@ -2,12 +2,22 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import pickle  
-#
-# model = pickle.load(open('', 'rb'))  
 
-# data = pd.read_csv('')  
+def predict_results(model, encodedr, sample):
+    result = model.predict(sample.reshape(1,-1))
+    result = encoder.inverse_transform(result)
+    if result == 'R':
+        return 'Normal'
+    else:
+        return 'Abnormal'
+    
+with open('label_encoder.pkl', 'rb') as file:
+    encoder = pickle.load(file)
 
-# le = pickle.load(open('', 'rb'))  
+with open('model.pkl', 'rb') as file:
+    model = pickle.load(file)
+
+data = pd.read_csv('random_sample.csv')
 
 attack_types = ['dos', 'rpm', 'fuzzy', 'gear', 'r']
 risk_levels = {
@@ -27,25 +37,17 @@ Welcome to the Attack Classification Demo! This tool allows you to explore and c
 """)
 
 attack_choice = st.selectbox('Select an attack sample:', attack_types)
-
-sample = pd.Series({
-    '018f': 0,
-    'fe': 0,
-    '5b': 0,
-    '00': 0,
-    '3c': 0,
-    'label': attack_choice
-})
-
+sample = data[data['flag']==attack_types].sample()
+sample = sample.squeeze()
 
 
 st.subheader('Sample Data:')
 st.dataframe(sample.to_frame().T)
 
-features = sample.iloc[1:-1].values.reshape(1, -1)  
+features = sample.iloc[:-1].values.reshape(1, -1)  
 
 
-prediction = 'dos'
+prediction = predict_results(model, encoder, features)
 
 col1, col2 = st.columns(2)
 with col1:
