@@ -1,23 +1,31 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import pickle  
-#
-# model = pickle.load(open('', 'rb'))  
+import pickle
 
-# data = pd.read_csv('')  
+# Function to predict results
+def predict_results(model, encoder, sample):
+    result = model.predict(sample.reshape(1, -1))
+    result = encoder.inverse_transform(result)
+    if result == 'R':
+        return 'Normal'
+    else:
+        return 'Abnormal'
 
-# le = pickle.load(open('', 'rb'))  
+with open('./models/label_encoder.pkl', 'rb') as file:
+    encoder = pickle.load(file)
 
-attack_types = ['dos', 'rpm', 'fuzzy', 'gear', 'r']
+with open('./models/model.pkl', 'rb') as file:
+    model = pickle.load(file)
+
+
+data = pd.read_csv(',/data/random_sample.csv')
+
+attack_types = ['Abnormal','Normal']
 risk_levels = {
-    'dos': 'High',
-    'rpm': 'Medium',
-    'fuzzy': 'Low',
-    'gear': 'Medium',
-    'r': 'High'
+    'Normal': 'Low',
+    'Abnormal': 'High'
 }
-
 
 st.set_page_config(page_title="Attack Classification Demo", page_icon=":shield:", layout="wide")
 
@@ -28,42 +36,29 @@ Welcome to the Attack Classification Demo! This tool allows you to explore and c
 
 attack_choice = st.selectbox('Select an attack sample:', attack_types)
 
-sample = pd.Series({
-    '018f': 0,
-    'fe': 0,
-    '5b': 0,
-    '00': 0,
-    '3c': 0,
-    'label': attack_choice
-})
-
-
+sample = data[data['flag'] == attack_choice].sample(1).squeeze()
 
 st.subheader('Sample Data:')
 st.dataframe(sample.to_frame().T)
 
-features = sample.iloc[1:-1].values.reshape(1, -1)  
+features = sample.drop(labels='flag').values.reshape(1, -1)
 
-
-prediction = 'dos'
+prediction = predict_results(model, encoder, features)
 
 col1, col2 = st.columns(2)
 with col1:
     st.subheader('Predicted Attack Type:')
-    if prediction == sample['label']:
+    if prediction == sample['flag']:
         st.success(f'{prediction}')
     else:
         st.error(f'{prediction}')
 
 with col2:
     st.subheader('True Attack Type:')
-    st.info(f'{sample["label"]}')
+    st.info(f'{sample["flag"]}')
 
 risk_level = risk_levels[prediction]
 if risk_level == 'High':
     st.error(f'Risk Level: {risk_level}')
-elif risk_level == 'Medium':
-    st.warning(f'Risk Level: {risk_level}')
 else:
     st.success(f'Risk Level: {risk_level}')
-
