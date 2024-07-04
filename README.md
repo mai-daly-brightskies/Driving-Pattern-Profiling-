@@ -37,7 +37,38 @@ We provide car-hacking datasets which include DoS attacks, fuzzy attacks, spoofi
 
 ## Working Steps
 ### Phase 1: Driving Pattern Profiling
-(Compelete Later)
+#### Exploratory Data Analysis (EDA)
+
+First, we applied EDA to understand the data and gain some insights:
+
+- **Data Imbalance**: The data is unbalanced, with significantly more instances in drivers (D, B) compared to others (G, A).
+- **Column Dropping**: Dropped columns that were highly correlated with each other or had approximately the same values.
+- **Driver Behavior Insights**:
+  - **Drivers I and G**: 
+    - Most consistent and highest median engine coolant temperatures (~95°C).
+    - Indicate highly controlled and optimized operational conditions.
+    - Likely used in environments requiring consistent performance (e.g., highway driving).
+  - **Drivers E and H**:
+    - Display significant variability and lower temperatures.
+    - Suggest potential issues with stable operational conditions.
+
+#### Feature Selection
+
+- Applied feature selection using `RandomForestClassifier`.
+
+#### Feature Engineering
+
+- Applied rolling statistics with a window size of 60 seconds to compute the mean, median, and standard deviation and added them as features to the dataset.
+
+#### Data Splitting
+
+- Split the data into training and testing sets.
+
+#### Model Application and Hyperparameter Tuning
+
+- Applied various models such as Multi-Layer Perceptron (MLP), Random Forest, Support Vector Machine (SVM), and Autoencoder.
+- Performed hyperparameter tuning using Optuna.
+
 
 
 ### Phase 2: Car Hacking Classification
@@ -100,7 +131,7 @@ These results underscore the model's robustness and accuracy in attack types.
 ## Tools and Libraries
 
 <p align="left"> <a href="https://www.w3schools.com/cs/" target="_blank" rel="noreferrer"> 
-<a href="https://pandas.pydata.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/2ae2a900d2f041da66e950e4d48052658d850630/icons/pandas/pandas-original.svg" alt="pandas" width="40" height="40"/> </a> <a href="https://www.python.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="40" height="40"/> </a> <a href="https://pytorch.org/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/pytorch/pytorch-icon.svg" alt="pytorch" width="40" height="40"/> </a> <a href="https://scikit-learn.org/" target="_blank" rel="noreferrer"> <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg" alt="scikit_learn" width="40" height="40"/> </a> <a href="https://seaborn.pydata.org/" target="_blank" rel="noreferrer"> <img src="https://seaborn.pydata.org/_images/logo-mark-lightbg.svg" alt="seaborn" width="40" height="40"/> </a> <a href="https://www.tensorflow.org" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/tensorflow/tensorflow-icon.svg" alt="tensorflow" width="40" height="40"/> </a> <a href="https://numpy.org/" target="_blank" rel="noreferrer"> <img src="https://numpy.org/doc/stable/_static/numpylogo.svg" alt="NumPy" width="80" height="40"/> </a> <a href="https://mlflow.org/" target="_blank" rel="noreferrer"> <img src="https://th.bing.com/th/id/OIP.OsB57V0FPteixDBD_BBN4gHaCt?w=321&h=128&c=7&r=0&o=5&pid=1.7" alt="MlFlow" width="60" height="40"/> </a> <a href="https://optuna.org/" target="_blank" rel="noreferrer"> <img src="https://th.bing.com/th/id/R.03ca3566557285f85f4f6fb9c0b99ff4?rik=zrr1Q1bqVILT1w&pid=ImgRaw&r=0" alt="Optuna" width="100" height="60"/> </a> <a href="https://streamlit.io/" target="_blank" rel="noreferrer"> <img src="https://cdn.knoji.com/images/logo/streamlit.jpg?fit=contain&trim=true&flatten=true&extend=25&width=1200&height=630" alt="Streamlit" width="80" height="80"/> </a> 
+<a href="https://pandas.pydata.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/2ae2a900d2f041da66e950e4d48052658d850630/icons/pandas/pandas-original.svg" alt="pandas" width="40" height="40"/> </a> <a href="https://www.python.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="40" height="40"/> </a> <a href="https://pytorch.org/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/pytorch/pytorch-icon.svg" alt="pytorch" width="40" height="40"/> </a> <a href="https://scikit-learn.org/" target="_blank" rel="noreferrer"> <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg" alt="scikit_learn" width="40" height="40"/> </a> <a href="https://seaborn.pydata.org/" target="_blank" rel="noreferrer"> <img src="https://seaborn.pydata.org/_images/logo-mark-lightbg.svg" alt="seaborn" width="40" height="40"/> </a> <a href="https://www.tensorflow.org" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/tensorflow/tensorflow-icon.svg" alt="tensorflow" width="40" height="40"/> </a> <a href="https://numpy.org/" target="_blank" rel="noreferrer"> <img src="https://numpy.org/doc/stable/_static/numpylogo.svg" alt="NumPy" width="80" height="40"/> </a> <a href="https://mlflow.org/" target="_blank" rel="noreferrer"> <img src="https://www.databricks.com/wp-content/uploads/2021/06/MLflow-logo-pos-TM-1.png" alt="MlFlow" width="60" height="40"/> </a> <a href="https://optuna.org/" target="_blank" rel="noreferrer"> <img src="https://cdn-images-1.medium.com/max/992/1*zO8ZL4F_0XJ06xJ1OsJ_Yw.png" alt="Optuna" width="100" height="60"/> </a> <a href="https://streamlit.io/" target="_blank" rel="noreferrer"> <img src="https://th.bing.com/th/id/R.6fbaed81014bba90f62f0b2f73d1c0c8?rik=BBXntzINeIhvrA&pid=ImgRaw&r=0" alt="Streamlit" width="75" height="50"/> </a> 
 
 ## Recommendations for Future Work
 1. **Expand Data Collection:** Include more diverse driving conditions and a larger number of drivers to improve model generalization.
